@@ -13,7 +13,7 @@ commands:
             - v{{ .Environment.CIRCLE_CACHE_VERSION }}-{{ arch }}-npm-cache-master-{{ .Environment.CIRCLE_JOB }}
       - run:
           name: Install dependencies
-          command: npm ci
+          command: npm install
       - run:
           name: Test
           command: npm test
@@ -32,19 +32,14 @@ commands:
       - run:
           command: npm run coveralls
 jobs:
-  node-v8:
-    docker:
-      - image: node:8
-    steps:
-      - test-nodejs
-  node-v10:
-    docker:
-      - image: node:10
-    steps:
-      - test-nodejs
   node-v12:
     docker:
       - image: node:12
+    steps:
+      - test-nodejs
+  node-v14:
+    docker:
+      - image: node:14
     steps:
       - test-nodejs
 
@@ -52,6 +47,5 @@ workflows:
   version: 2
   node-multi-build:
     jobs:
-      - node-v8
-      - node-v10
       - node-v12
+      - node-v14
